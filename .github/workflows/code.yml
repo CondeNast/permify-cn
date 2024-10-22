@@ -1,0 +1,64 @@
+name: code
+
+on:
+  push:
+    paths:
+      - ".github/workflows/code.yml"
+      - "**"
+
+concurrency: code
+
+jobs:
+  # gp-nonprod - 1
+  build-push-gp-nonprod:
+    runs-on: ubuntu-latest
+    environment:
+      name: gp-nonprod
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Global Build Push
+        id: build_push
+        uses: CondeNast/global-build-push-action@2.3.0
+        with:
+          ecr_repository_url: 166755036155.dkr.ecr.us-east-1.amazonaws.com/engagement-permify
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          context: .
+          target: production
+          push: true
+          build_args: |
+            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
+    outputs:
+      tag: ${{ steps.build_push.outputs.tag }}
+      image: ${{ steps.build_push.outputs.image }}
+  
+  deploy-gp-nonprod-eu-0:
+    needs: build-push-gp-nonprod
+    if: ${{ github.ref_name == 'main' || github.ref_name == 'staging'}}
+    runs-on: ubuntu-latest
+    environment:
+      name: gp-nonprod-protected
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Deploy
+        id: deploy
+        uses: CondeNast/global-deploy-action@3.4.0
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: eu-central-1
+          eks_cluster_name: gp-nonprod-eu-0
+          eks_namespace: engagement
+          helm_release_name: permify
+          helm_chart_name: gp-app
+          helm_chart_version: 9.x
+          helm_values_inline: |
+            deployment.app.image="166755036155.dkr.ecr.eu-central-1.amazonaws.com/engagement-permify:${{ needs.build-push-gp-nonprod.outputs.tag }}"
+            serviceAccount.roleArn="arn:aws:iam::166755036155:role/kubernetes/engagement/engagement-gp-nonprod-eu-0-permify"
+            readinessProbe.httpGet.path="/ping"
+            livenessProbe.httpGet.path="/ping"
+          helm_description: "tag:${{ needs.build-push-gp-nonprod.outputs.tag }}"
+          helm_values_file: ./kubernetes/gp-nonprod-eu-0.yml
+          deploy: true

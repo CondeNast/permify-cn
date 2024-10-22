@@ -1,0 +1,43 @@
+deployment:
+  strategy:
+    maxSurge: 34%
+    maxUnavailable: 0%
+  app:
+    port: 8080
+    limits:
+      memory: 250Mi
+    requests:
+      memory: 150Mi
+    env:
+      open:
+        NODE_ENV: staging
+        AWS_REGION: eu-central-1
+    readinessProbe:
+      httpGet:
+        path: /ping
+        port: 8080
+      initialDelaySeconds: 10
+      timeoutSeconds: 1
+      periodSeconds: 10
+    livenessProbe:
+      httpGet:
+        path: /ping
+        port: 8080
+      initialDelaySeconds: 10
+      timeoutSeconds: 1
+      periodSeconds: 10
+
+service:
+  port: 80
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 3
+  cpuTargetAverage: 70
+  memoryTargetAverage: 70
+
+alb:
+  groupName: permify
+  wafv2AclArn: null
+  rules:
+    - host: permify-engagement.gp-nonprod-eu-0.conde.digital
