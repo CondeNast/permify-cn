@@ -10,22 +10,22 @@ concurrency: eks-tenant-infra
 
 jobs:
   # gp-nonprod -
-  gp-nonprod-ap-northeast-1:
-    uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
-    with:
-      version: 1-1.2.6
-      environment_plan: gp-nonprod-readonly
-      environment_apply: gp-nonprod-protected
-      infra_dir: gp-nonprod/ap-northeast-1
-      working_dir: infra
-      aws_default_region: ap-northeast-1
-      main_branch: main
-    secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
-      ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
-      terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
+  # gp-nonprod-ap-northeast-1:
+  #   uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
+  #   with:
+  #     version: 1-1.2.6
+  #     environment_plan: gp-nonprod-readonly
+  #     environment_apply: gp-nonprod-protected
+  #     infra_dir: gp-nonprod/ap-northeast-1
+  #     working_dir: infra
+  #     aws_default_region: ap-northeast-1
+  #     main_branch: main
+  #   secrets:
+  #     aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+  #     ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+  #     terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
   gp-nonprod-eu-central-1:
     uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
     with:
@@ -42,71 +42,71 @@ jobs:
       ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
       ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
       terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
-  gp-nonprod-us-east-1:
-    uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
-    with:
-      version: 1-1.2.6
-      environment_plan: gp-nonprod-readonly
-      environment_apply: gp-nonprod-protected
-      infra_dir: gp-nonprod/us-east-1
-      working_dir: infra
-      aws_default_region: us-east-1
-      main_branch: main
-    secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
-      ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
-      terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
+  # gp-nonprod-us-east-1:
+  #   uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
+  #   with:
+  #     version: 1-1.2.6
+  #     environment_plan: gp-nonprod-readonly
+  #     environment_apply: gp-nonprod-protected
+  #     infra_dir: gp-nonprod/us-east-1
+  #     working_dir: infra
+  #     aws_default_region: us-east-1
+  #     main_branch: main
+  #   secrets:
+  #     aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+  #     ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+  #     terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
   # gp-prod
-  gp-prod-ap-northeast-1:
-    needs: gp-nonprod-ap-northeast-1
-    uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
-    with:
-      version: 1-1.2.6
-      environment_plan: gp-prod-readonly
-      environment_apply: gp-prod-protected
-      infra_dir: gp-prod/ap-northeast-1
-      working_dir: infra
-      aws_default_region: ap-northeast-1
-      main_branch: main
-    secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
-      ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
-      terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
-  gp-prod-eu-central-1:
-    needs: gp-nonprod-eu-central-1
-    uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
-    with:
-      version: 1-1.2.6
-      environment_plan: gp-prod-readonly
-      environment_apply: gp-prod-protected
-      infra_dir: gp-prod/eu-central-1
-      working_dir: infra
-      aws_default_region: eu-central-1
-      main_branch: main
-    secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
-      ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
-      terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
-  gp-prod-us-east-1:
-    needs: gp-nonprod-us-east-1
-    uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
-    with:
-      version: 1-1.2.6
-      environment_plan: gp-prod-readonly
-      environment_apply: gp-prod-protected
-      infra_dir: gp-prod/us-east-1
-      working_dir: infra
-      aws_default_region: us-east-1
-      main_branch: main
-    secrets:
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
-      ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
-      terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
+  # gp-prod-ap-northeast-1:
+  #   needs: gp-nonprod-ap-northeast-1
+  #   uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
+  #   with:
+  #     version: 1-1.2.6
+  #     environment_plan: gp-prod-readonly
+  #     environment_apply: gp-prod-protected
+  #     infra_dir: gp-prod/ap-northeast-1
+  #     working_dir: infra
+  #     aws_default_region: ap-northeast-1
+  #     main_branch: main
+  #   secrets:
+  #     aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+  #     ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+  #     terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
+  # gp-prod-eu-central-1:
+  #   needs: gp-nonprod-eu-central-1
+  #   uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
+  #   with:
+  #     version: 1-1.2.6
+  #     environment_plan: gp-prod-readonly
+  #     environment_apply: gp-prod-protected
+  #     infra_dir: gp-prod/eu-central-1
+  #     working_dir: infra
+  #     aws_default_region: eu-central-1
+  #     main_branch: main
+  #   secrets:
+  #     aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+  #     ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+  #     terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
+  # gp-prod-us-east-1:
+  #   needs: gp-nonprod-us-east-1
+  #   uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
+  #   with:
+  #     version: 1-1.2.6
+  #     environment_plan: gp-prod-readonly
+  #     environment_apply: gp-prod-protected
+  #     infra_dir: gp-prod/us-east-1
+  #     working_dir: infra
+  #     aws_default_region: us-east-1
+  #     main_branch: main
+  #   secrets:
+  #     aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     ecr_aws_access_key_id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+  #     ecr_aws_secret_access_key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+  #     terraform_modules_deploy_key: ${{ secrets.GLOBAL_TERRAFORM_MODULES_DEPLOY_KEY }}
