@@ -9,7 +9,7 @@ on:
 concurrency: eks-tenant-infra
 
 jobs:
-  # gp-nonprod
+  # gp-nonprod -
   gp-nonprod-ap-northeast-1:
     uses: CondeNast/global-workflows/.github/workflows/lit-terraform.yml@6.2.0
     with:
